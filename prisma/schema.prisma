@@ -12,8 +12,8 @@ datasource db {
 
 model User {
   id              Int       @id @default(autoincrement())
-  username        String    @db.VarChar(30)
-  password        String    @db.VarChar(72)
+  username        String    
+  password        String    
   email           String
   address         Address[]
   cart            Cart[]
@@ -34,7 +34,7 @@ model Product {
   bakery_id       Int
   productName     String
   price           Float
-  bakery          Bakery    @relation(fields: [BakeryID], references: [BakeryID])
+  bakery          Bakery    @relation(fields: [bakery_id], references: [bakery_id])
   cart            Cart[]    
   orderDetail     OrderDetail[]
 
@@ -50,38 +50,38 @@ model Cart {
 }
 
 model Order {
-  order_id       Int        @id @default(autoincrement())
-  user_id        Int
-  totalamount    Float
-  orderdate      DateTime
-  user           User        @relation(fields: [user_id], references: [id])
-  payment        Payment[] 
-  orderdetail    OrderDetail[]
+  order_id        Int        @id @default(autoincrement())
+  user_id         Int
+  totalamount     Float
+  orderdate       DateTime
+  user            User        @relation(fields: [user_id], references: [id])
+  payment         Payment[] 
+  orderdetail     OrderDetail[]
 }
 
 model Payment {
-  payment_id     Int       @id @default(autoincrement())
-  order_id       Int
-  paymentmethod  String
-  amount         Float
-  order          Order      @relation(fields: [order_id], references: [order_id])
+  payment_id      Int       @id @default(autoincrement())
+  order_id        Int
+  paymentmethod   String
+  amount          Float
+  order           Order      @relation(fields: [order_id], references: [order_id])
 }
 
 model OrderDetail {
-  orderdetail_id Int       @id @default(autoincrement())
-  order_id       Int
-  product_id     Int
-  quantity       Int
-  subtotal       Float
-  order          Order     @relation(fields: [order_id], references: [order_id])
-  product        Product   @relation(fields: [product_id], references: [product_id])
+  orderdetail_id  Int       @id @default(autoincrement())
+  order_id        Int
+  product_id      Int
+  quantity        Int
+  subtotal        Float
+  order           Order     @relation(fields: [order_id], references: [order_id])
+  product         Product   @relation(fields: [product_id], references: [product_id])
 }
 
 model Bakery {
-  bakery_id      Int       @id @default(autoincrement())
-  bakeryname     String
-  description    String
-  product        Product[] 
+  bakery_id       Int       @id @default(autoincrement())
+  bakeryname      String
+  description     String
+  product         Product[] 
 }
 
 
