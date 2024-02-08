@@ -18,5 +18,5 @@ model User {
 }
 
 model Address {
-  
+  a
 }
