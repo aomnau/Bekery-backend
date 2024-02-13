@@ -9,12 +9,13 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-
+// service
 app.use('/auth', authRoute)
 
-
+//notfound
 app.use( notFound )
 
+//error
 app.use(errorMiddleware)
 
 let port = process.env.PORT || 8000
