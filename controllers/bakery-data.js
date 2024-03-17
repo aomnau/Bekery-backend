@@ -24,5 +24,5 @@ exports.bekery = async (req, res, next) => {
 
 exports.showbekery = async (req, res, next) =>{
     const showimage = await db.bekery.findMany()
-    res.json({showimage})
+    res.json([showimage])
 }
