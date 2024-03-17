@@ -4,6 +4,7 @@ const cors = require('cors')
 const notFound = require('./middlewares/notFound')
 const errorMiddleware = require('./middlewares/error')
 const authRoute = require('./routes/auth-route')
+const bakeryname = require('./routes/bekery-route')
 const app = express()
 
 app.use(cors())
@@ -11,6 +12,8 @@ app.use(express.json())
 
 // service
 app.use('/auth', authRoute)
+
+app.use('/bekery', bakeryname)
 
 //notfound
 app.use( notFound )

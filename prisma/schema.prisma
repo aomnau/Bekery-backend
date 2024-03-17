@@ -39,10 +39,10 @@ model Address {
 
 model Product {
   product_id      Int          @id @default(autoincrement())
-  bakery_id       Int
+  bekery_id       Int
   productName     String
   price           Float
-  bakery          Bakery       @relation(fields: [bakery_id], references: [bakery_id], onDelete: Cascade, onUpdate: Cascade)
+  bekery          Bekery       @relation(fields: [bekery_id], references: [bekery_id], onDelete: Cascade, onUpdate: Cascade)
   cart            Cart[]    
   orderDetail     OrderDetail[]
 
@@ -85,9 +85,10 @@ model OrderDetail {
   product         Product      @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Bakery {
-  bakery_id       Int          @id @default(autoincrement())
-  bakeryname      String
+model Bekery {
+  bekery_id       Int          @id @default(autoincrement())
+  image_bekery    String
+  bekeryname      String
   description     String
   product         Product[] 
 }
