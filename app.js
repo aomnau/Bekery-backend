@@ -6,6 +6,7 @@ const errorMiddleware = require('./middlewares/error')
 const authRoute = require('./routes/auth-route')
 const bakeryname = require('./routes/bekery-route')
 const app = express()
+const path = require("path")
 
 app.use(cors())
 app.use(express.json())
@@ -14,6 +15,8 @@ app.use(express.json())
 app.use('/auth', authRoute)
 
 app.use('/bekery', bakeryname)
+
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 //notfound
 app.use( notFound )

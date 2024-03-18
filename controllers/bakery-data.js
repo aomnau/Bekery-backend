@@ -15,6 +15,7 @@ exports.bekery = async (req, res, next) => {
                 bekeryname: data.bekeryname,
                 description: data.description
             }
+            
         })
         res.json({ msg: 'บันทึกข้อมูล bakery เรียบร้อยแล้ว', result : bekery })
     } catch (err) {
@@ -24,5 +25,5 @@ exports.bekery = async (req, res, next) => {
 
 exports.showbekery = async (req, res, next) =>{
     const showimage = await db.bekery.findMany()
-    res.json([showimage])
+    res.json(showimage)
 }
