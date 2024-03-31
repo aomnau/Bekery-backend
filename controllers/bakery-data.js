@@ -11,7 +11,7 @@ exports.bekery = async (req, res, next) => {
 
         const bekery = await db.bekery.create({
             data: {
-                image_bekery: image.path,
+                imagebekery: image.path,
                 bekeryname: data.bekeryname,
                 description: data.description
             }
@@ -26,4 +26,21 @@ exports.bekery = async (req, res, next) => {
 exports.showbekery = async (req, res, next) =>{
     const showimage = await db.bekery.findMany()
     res.json(showimage)
+}
+
+exports.showbekeryproduct = async (req, res, next) =>{
+    const {id} = req.params
+    try {
+        
+   
+    const showproduct = await db.bekery.findUnique(
+        {
+            where : {bekery_id : parseInt(id)}
+        }
+    )
+    res.json({showproduct})
+    console.log(id)
+} catch (err) {
+        
+}
 }

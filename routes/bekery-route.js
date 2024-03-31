@@ -3,7 +3,8 @@ const router = express.Router()
 const bekerydata = require('../controllers/bakery-data')
 const upload = require('../middlewares/upload')
 
-router.post('/bekery-name', upload.single("image_bekery"), bekerydata.bekery)
+router.post('/bekery-name', upload.single("imagebekery"), bekerydata.bekery)
 router.get('/showbekery', bekerydata.showbekery)
+router.get('/showproduct/:id', bekerydata.showbekeryproduct)
 
 module.exports = router

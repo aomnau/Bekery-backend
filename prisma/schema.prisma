@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int          @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  username        String    
+  password        String    
+  email           String
+  phone           String
+  address         Address[]
+  cart            Cart[]
+  order           Order[]
+}
+
+model Address {
+  address_id      Int          @id @default(autoincrement())
+  user_id         Int          @unique
+  user            User         @relation(fields: [user_id], references: [id])
+  addressline1    String
+  addressline2    String
+  city            String
+}
+
+model Product {
+  product_id      Int          @id @default(autoincrement())
+  bekery_id       Int
+  productName     String
+  price           Float
+  bekery          Bekery       @relation(fields: [bekery_id], references: [bekery_id])
+  cart            Cart[]    
+  orderDetail     OrderDetail[]
+
+}
+
+model Cart {
+  cart_id         Int          @id @default(autoincrement())
+  user_id         Int
+  product_id      Int       
+  quantity        Int
+  user            User         @relation(fields: [user_id], references: [id])  
+  product         Product      @relation(fields: [product_id], references: [product_id])
+}
+
+model Order {
+  order_id        Int          @id @default(autoincrement())
+  user_id         Int
+  totalamount     Float
+  orderdate       DateTime
+  user            User         @relation(fields: [user_id], references: [id])
+  payment         Payment[] 
+  orderdetail     OrderDetail[]
+}
+
+model Payment {
+  payment_id      Int          @id @default(autoincrement())
+  order_id        Int
+  paymentmethod   String
+  amount          Float
+  order           Order        @relation(fields: [order_id], references: [order_id])
+}
+
+model OrderDetail {
+  orderdetail_id  Int          @id @default(autoincrement())
+  order_id        Int
+  product_id      Int
+  quantity        Int
+  subtotal        Float
+  order           Order        @relation(fields: [order_id], references: [order_id])
+  product         Product      @relation(fields: [product_id], references: [product_id])
+}
+
+model Bekery {
+  bekery_id       Int          @id @default(autoincrement())
+  imagebekery     String
+  bekeryname      String
+  description     String
+  product         Product[] 
+}
+
+
+enum Status {
+  pending
+  doing
+  done
+}
