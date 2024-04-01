@@ -29,18 +29,17 @@ exports.showbekery = async (req, res, next) =>{
 }
 
 exports.showbekeryproduct = async (req, res, next) =>{
-    const {id} = req.params
-    try {
-        
-   
-    const showproduct = await db.bekery.findUnique(
-        {
-            where : {bekery_id : parseInt(id)}
+    const { id } = req.params;
+    try {       
+        const showproduct = await db.bekery.findUnique({
+            where: { bekery_id: parseInt(id) }
+        });
+        if (!showproduct) {
+            return res.status(404).json({ message: "ไม่พบข้อมูล" });
         }
-    )
-    res.json({showproduct})
-    console.log(id)
-} catch (err) {
+        res.json(showproduct);
+        console.log(showproduct);
+    } catch (err) {
         
-}
-}
+    }
+};
