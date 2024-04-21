@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id              Int          @id @default(autoincrement())
+  user_id              Int          @id @default(autoincrement())
   firstName      String
   lastName       String
-  username        String    
+  username        String            @unique
   password        String    
-  email           String
+  email           String            @unique
   phone           String
   address         Address[]
   cart            Cart[]
@@ -25,8 +25,8 @@ model User {
 
 model Address {
   address_id      Int          @id @default(autoincrement())
-  user_id         Int          @unique
-  user            User         @relation(fields: [user_id], references: [id])
+  user_id         Int          
+  user            User         @relation(fields: [user_id], references: [user_id])
   addressline1    String
   addressline2    String
   city            String
@@ -46,10 +46,12 @@ model Product {
 model Cart {
   cart_id         Int          @id @default(autoincrement())
   user_id         Int
+  bekery_id       Int
   product_id      Int       
   quantity        Int
-  user            User         @relation(fields: [user_id], references: [id])  
+  user            User         @relation(fields: [user_id], references: [user_id])  
   product         Product      @relation(fields: [product_id], references: [product_id])
+  bekery          Bekery       @relation(fields: [bekery_id], references: [bekery_id])
 }
 
 model Order {
@@ -57,7 +59,7 @@ model Order {
   user_id         Int
   totalamount     Float
   orderdate       DateTime
-  user            User         @relation(fields: [user_id], references: [id])
+  user            User         @relation(fields: [user_id], references: [user_id])
   payment         Payment[] 
   orderdetail     OrderDetail[]
 }
@@ -86,6 +88,7 @@ model Bekery {
   bekeryname      String
   description     String
   product         Product[] 
+  cart            Cart[]
 }
 
 
