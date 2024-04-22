@@ -10,7 +10,8 @@ router.get('/showproduct/:id', bekerydata.showbekeryproduct)
 router.post('/addProduct', bekerydata.addProduct)
 router.post('/addtocart', authenticate,bekerydata.addProductToCart)
 router.post('/addAddress', authenticate, bekerydata.addAddress)
-router.get('/showaddress/',bekerydata.showbekeryaddress)
+router.get('/showaddress',bekerydata.showbekeryaddress)
+router.get('/showcart',authenticate, bekerydata.showbekerycart)
 
 
 

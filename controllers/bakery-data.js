@@ -93,6 +93,40 @@ exports.addProductToCart = async (req, res, next) => {
     }
 };
 
+exports.removeFromCart = async (req, res, next) => {
+    try {
+        const { cartItemId } = req.params;
+        const user = req.user;
+
+        if (!user || !cartItemId) {
+            return res.status(400).json({ error: 'ข้อมูลไม่ถูกต้อง' });
+        }
+
+        const cartItem = await db.cart.findUnique({
+            where: { cart_id: parseInt(cartItemId) },
+            include: {
+                user: true
+            }
+        });
+
+        if (!cartItem) {
+            return res.status(404).json({ error: 'ไม่พบรายการในตะกร้า' });
+        }
+
+        if (cartItem.user.user_id !== user.user_id) {
+            return res.status(403).json({ error: 'คุณไม่มีสิทธิ์ในการลบรายการนี้' });
+        }
+
+        await db.cart.delete({
+            where: { cart_id: parseInt(cartItemId) }
+        });
+
+        res.json({ msg: 'ลบรายการในตะกร้าเรียบร้อยแล้ว' });
+    } catch (err) {
+        next(err);
+    }
+};
+
 exports.addAddress = async (req, res, next) => {
     try {
         const { addressline1, addressline2, city } = req.body;
@@ -158,5 +192,24 @@ exports.showbekeryaddress = async (req, res, next) => {
          res.status(200).json(showaddress );
     } catch (error) {
         return res.status(500).json({ message: error.message });
+    }
+}
+
+exports.showbekerycart= async (req, res, next) => {
+    try {
+        const user_id = req.user;
+
+        const cartItems = await db.cart.findMany({
+            where: {
+                user_id: user_id.user_id
+            },
+            include: {
+                product: true
+            }
+        });
+
+        res.json(cartItems);
+    } catch (err) {
+        next(err);
     }
 }
