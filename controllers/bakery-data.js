@@ -204,7 +204,11 @@ exports.showbekerycart= async (req, res, next) => {
                 user_id: user_id.user_id
             },
             include: {
-                product: true
+                product: {
+                    include: {
+                        bekery: true 
+                    }
+                }
             }
         });
 

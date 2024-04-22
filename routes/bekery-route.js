@@ -12,6 +12,7 @@ router.post('/addtocart', authenticate,bekerydata.addProductToCart)
 router.post('/addAddress', authenticate, bekerydata.addAddress)
 router.get('/showaddress',bekerydata.showbekeryaddress)
 router.get('/showcart',authenticate, bekerydata.showbekerycart)
+router.post('/removecart/:cartItemId', authenticate, bekerydata.removeFromCart);
 
 
 
