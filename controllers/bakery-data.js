@@ -217,3 +217,114 @@ exports.showbekerycart= async (req, res, next) => {
         next(err);
     }
 }
+
+exports.createOrderDetail = async (req, res, next) => {
+    try {
+        const { product_id, quantity } = req.body;
+
+        // Validate input
+        if (!product_id || !quantity) {
+            return res.status(400).json({ error: 'Please provide product ID and quantity' });
+        }
+
+        // Assuming user ID is obtained from req.user
+        const user_id = req.user.user_id;
+
+        // Create the order detail
+        const orderDetail = await db.orderDetail.create({
+            data: {
+                product_id: parseInt(product_id),
+                quantity: parseInt(quantity)
+            }
+        });
+
+        res.json({ msg: 'Order detail created successfully', result: orderDetail });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.showOrderDetail = async (req, res, next) => {
+    try {
+        const orderDetails = await db.orderDetail.findMany({
+            include: {
+                product: true // Include product details
+            }
+        });
+
+        res.json(orderDetails);
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.createOrder = async (req, res, next) => {
+    try {
+        const { bekery_id, totalamount } = req.body;
+        const user = req.user;
+  
+        if ( !bekery_id || !totalamount) {
+            return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
+        }
+
+
+        const order = await db.order.create({
+            data: {
+                user_id: user.user_id,
+                bekery_id: parseInt(bekery_id),
+                totalamount: parseFloat(totalamount)
+            }
+        });
+
+        res.json({ msg: 'สร้างคำสั่งซื้อเรียบร้อยแล้ว', result: order });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.createPayment = async (req, res, next) => {
+    try {
+        const { order_id, paymentmethod } = req.body;
+
+        // Validate input
+        if (!order_id || !paymentmethod) {
+            return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
+        }
+
+        // Create the payment
+        const payment = await db.payment.create({
+            data: {
+                order_id: parseInt(order_id),
+                paymentmethod
+            }
+        });
+
+        res.json({ msg: 'บันทึกข้อมูลการชำระเงินเรียบร้อยแล้ว', result: payment });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.showOrder = async (req, res, next) => {
+    try {
+        const { user_id } = req.user;
+
+        // Validate input
+        if (!user_id) {
+            return res.status(400).json({ error: 'ไม่พบผู้ใช้' });
+        }
+
+        // Get orders by user ID
+        const orders = await db.order.findMany({
+            where: { user_id: parseInt(user_id) },
+            include: {
+                bekery: true, // Include bekery details in the response
+                payment: true // Include payment details in the response
+            }
+        });
+
+        res.json({ orders });
+    } catch (err) {
+        next(err);
+    }
+};

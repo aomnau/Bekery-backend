@@ -39,8 +39,7 @@ model Product {
   price           Float
   bekery          Bekery       @relation(fields: [bekery_id], references: [bekery_id])
   cart            Cart[]    
-  orderDetail     OrderDetail[]
-
+  orderdetail     OrderDetail[]
 }
 
 model Cart {
@@ -57,28 +56,27 @@ model Cart {
 model Order {
   order_id        Int          @id @default(autoincrement())
   user_id         Int
+  bekery_id       Int  
   totalamount     Float
-  orderdate       DateTime
+  orderdate       DateTime     @default(now())
   user            User         @relation(fields: [user_id], references: [user_id])
+  bekery          Bekery       @relation(fields: [bekery_id], references: [bekery_id])
   payment         Payment[] 
-  orderdetail     OrderDetail[]
+
+  
 }
 
 model Payment {
   payment_id      Int          @id @default(autoincrement())
   order_id        Int
   paymentmethod   String
-  amount          Float
   order           Order        @relation(fields: [order_id], references: [order_id])
 }
 
 model OrderDetail {
   orderdetail_id  Int          @id @default(autoincrement())
-  order_id        Int
   product_id      Int
   quantity        Int
-  subtotal        Float
-  order           Order        @relation(fields: [order_id], references: [order_id])
   product         Product      @relation(fields: [product_id], references: [product_id])
 }
 
@@ -89,6 +87,7 @@ model Bekery {
   description     String
   product         Product[] 
   cart            Cart[]
+  order           Order[]
 }
 
 
